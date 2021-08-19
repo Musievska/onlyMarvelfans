@@ -1,23 +1,17 @@
 const express = require('express');
-const helmet = require("helmet");
-const mongoose = require('mongoose');
-
+const helmet = require('helmet');
+const cors = require('cors');
+const db = require('./config/db');
+const dotenv = require('dotenv');
 
 const app = express();
-
+app.use(express.json());
 app.use(helmet());
+app.use(cors({ origin: true, credentials: true }));
+dotenv.config();
 
 
-mongoose.connect('mongodb://localhost:27017/mongo-tree', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
 
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-    console.log('connected db')
-});
 app.use('/', (req, res) => {
     res.send('hello');
 }
