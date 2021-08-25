@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const comicSheme = mongoose.Schema({
-    id: {
+const comicScheme = mongoose.Schema({
+    comic_id: {
         Number
     },
     title: {
@@ -14,9 +14,6 @@ const comicSheme = mongoose.Schema({
         String
     },
 
-    
-    
-
 });
 
-export default comicSheme;
+module.exports = mongoose.model('Comic', comicScheme);
