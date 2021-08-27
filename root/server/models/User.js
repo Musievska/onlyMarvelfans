@@ -5,19 +5,21 @@ const UserSchema = mongoose.Schema({
         type: String,
         require: true,
         min: 6,
-        max: 20,
+        max: 50,
         unique: true
     },
     email: {
         type: String,
         require: true,
         unique: true,
-        min: 10
+        min: 10,
+        max: 50
     },
     password: {
         type: String,
         require: true,
-        min: 6
+        min: 8,
+        max: 50
     },
     favoritesComics: [{
         type: mongoose.Schema.Types.ObjectId,
