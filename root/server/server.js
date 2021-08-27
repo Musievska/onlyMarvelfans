@@ -2,13 +2,13 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const db = require('./config/db');
-const dotenv = require('dotenv');
+require('dotenv').config();
 
 const app = express();
 app.use(express.json());
 app.use(helmet());
 app.use(cors({ origin: true, credentials: true }));
-dotenv.config();
+db();
 
 
 
