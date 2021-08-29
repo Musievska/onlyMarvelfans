@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const JoiPassword = require('joi-password');
 
 const newUserValidation = (user) => {
     const schema = Joi.object({
@@ -8,15 +9,31 @@ const newUserValidation = (user) => {
             .max(50)
             .required()
             .unique(),
-        password: Joi.string()
+        password: JoiPassword.string()
             .required()
             .min(8)
-            .max(50),
+            .max(50)
+            .minOfSpecialCharacters(1)
+            .minOfUppercase(1)
+            .messages({
+                'password.min': `Password should be at least 8 characters`,
+                'password.max': `Password should be at most 50 characters`,
+                'password.minOfSpecialCharacters': `Password should contain at least one special character`,
+                'password.minOfUppercase': `Password should contain at least one upper case letter`
+            }),
         repeated_password: Joi.string().required().valid(Joi.ref('password')),
         email: Joi.string().email()
     });
-    return schema.validate(user);
+    return schema.validate(user, { abortEarly: false });
 };
 
-module.exports = newUserValidation;
+const userLoginValidation = (user) => {
+    const schema = Joi.object({
+        email: Joi.string().email.required(),
+        password: Joi.string().password.required
+    });
+    return schema.validate(user);
+}
+
+module.exports = { newUserValidation, userLoginValidation };
 
