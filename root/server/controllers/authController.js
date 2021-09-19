@@ -1,4 +1,4 @@
-const validation = require('../validations/validator');
+const validation = require('../helper/validator');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -68,3 +68,81 @@ const userRegister = async (req, res) => {
     });
 }
 
+const userLogin = async (req, res) => {
+    try {
+        const { error } = await validation.userLoginValidation(req.body);
+
+        if (error) {
+            console.log(error.details[0].message);
+            return res.json({
+                status: 404,
+                message: error.details[0].message
+            });
+        }
+
+        const user = await User.findOne
+            ({
+                email: req.body.email
+            })
+            .populate('favoritesComics')
+            .populate('favoritesStories')
+            .populate('favoritesCharacters')
+            .populate('favoritesEvents')
+            .populate('favoritesSeries')
+            .exec();
+        
+        if (!user) {
+            return res.json({
+                status: 404,
+                message: `Emails does not exist`
+            });
+        }
+        
+        const isValidPassword = await bcrypt.compare(
+            req.body.password,
+            user.password
+        );
+
+        if (!isValidPassword) {
+            console.log(`Wrong password`);
+            return res.json({
+                status: 404,
+                message: `Invalid password`
+            });
+        }
+
+        var token = jwt.sign({
+            id: user.id,
+            email: user.email,
+            username: user.username
+        },
+            proces.env.JWT_KEY,
+            { expires: '2h' }
+        );
+
+        res.status(200).json({
+            token,
+            data: {
+                user_detail: {
+                    id: user.id,
+                    email: user.email,
+                    username: user.username
+                },
+                favoritesCharacters: user.favoritesCharacters,
+                favoritesComics: user.favoritesComics,
+                favoritesSeries: user.favoritesSeries,
+                favoritesEvents: user.favoritesEvents,
+                favoritesStories: user.favoritesStories
+            }
+        });
+    } catch (err) {
+        console.log(`Error: ${err}`);
+    }
+};
+
+//const userLogout
+
+module.exports = {
+    userRegister,
+    userLogin
+}

@@ -3,6 +3,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const db = require('./config/db');
 require('dotenv').config();
+const routes = require('./routes');
 
 const app = express();
 app.use(express.json());
@@ -11,6 +12,7 @@ app.use(cors({ origin: true, credentials: true }));
 db();
 
 
+app.use('/', routes);
 
 app.use('/', (req, res) => {
     res.send('hello');

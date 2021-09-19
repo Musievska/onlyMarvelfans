@@ -21,23 +21,23 @@ const UserSchema = mongoose.Schema({
         min: 8,
         max: 50
     },
-    favoritesComics: [{
+    favoriteComics: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comic'
     }],
-    favoritesCharacters: [{
+    favoriteCharacters: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Character'
     }],
-    favoritesStories: [{
+    favoriteStories: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Story'
     }],
-    favoritesSeries: [{
+    favoriteSeries: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Serie'
     }],
-    favoritesEvents: [{
+    favoriteEvents: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Event'
     }],
