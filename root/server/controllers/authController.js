@@ -84,11 +84,11 @@ const userLogin = async (req, res) => {
             ({
                 email: req.body.email
             })
-            .populate('favoritesComics')
-            .populate('favoritesStories')
-            .populate('favoritesCharacters')
-            .populate('favoritesEvents')
-            .populate('favoritesSeries')
+            .populate('favoriteComics')
+            .populate('favoriteStories')
+            .populate('favoriteCharacters')
+            .populate('favoriteEvents')
+            .populate('favoriteSeries')
             .exec();
         
         if (!user) {
@@ -128,11 +128,11 @@ const userLogin = async (req, res) => {
                     email: user.email,
                     username: user.username
                 },
-                favoritesCharacters: user.favoritesCharacters,
-                favoritesComics: user.favoritesComics,
-                favoritesSeries: user.favoritesSeries,
-                favoritesEvents: user.favoritesEvents,
-                favoritesStories: user.favoritesStories
+                favoriteCharacters: user.favoriteCharacters,
+                favoriteComics: user.favoriteComics,
+                favoriteSeries: user.favoriteSeries,
+                favoriteEvents: user.favoriteEvents,
+                favoriteStories: user.favoriteStories
             }
         });
     } catch (err) {
@@ -140,9 +140,10 @@ const userLogin = async (req, res) => {
     }
 };
 
-//const userLogout
+//const userLogout 
 
 module.exports = {
     userRegister,
-    userLogin
+    userLogin,
+   // userLogout
 }
