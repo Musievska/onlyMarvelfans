@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import { getUserDataReduser } from './getUserDataReduser';
-import { getMarvelDataReduser } from './getMarvelDataReduser';
+import userDataReduce  from './getUserDataReducer';
+import getMarvelDataReducer from './getMarvelDataReducer';
 
-
-export const rootReducer = combineReducers({
-    auth: getUserDataReduser,
-    marvelData: getMarvelDataReduser
+const rootReducer = combineReducers({
+    userDataReduce: userDataReduce,
+    marvelData: getMarvelDataReducer
 });
 
+export default rootReducer;

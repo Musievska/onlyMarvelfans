@@ -1,7 +1,7 @@
 import { LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT } from '../constants/getUserDataConstants';
 import { FAVORITE_CHARACTERS, FAVORITE_COMICS, FAVORITE_EVENTS, FAVORITE_SERIES, FAVORITE_STORIES } from '../constants/getMarvelDataConstants';
 import axios from 'axios';
-import swal from "sweetalert";
+import swal from 'sweetalert';
 
 const API = process.env.REACT_APP_API;
 
@@ -87,7 +87,7 @@ export const authErrorAction = (data) => {
     return (dispatch) => {
         dispatch({
             type: LOGIN_FAILURE,
-            payload: null
+            //payload: null
         });
     }
 }

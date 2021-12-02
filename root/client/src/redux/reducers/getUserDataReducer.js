@@ -5,7 +5,7 @@ const initialState = {
     currentUser: {}
 };
 
-export const userDataReduce = (state = initialState, action) => {
+ export const userDataReduce = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN_SUCCESS: {
             return {
@@ -33,3 +33,4 @@ export const userDataReduce = (state = initialState, action) => {
             }
     }
 };
+
