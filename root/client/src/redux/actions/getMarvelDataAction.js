@@ -19,7 +19,7 @@ export const isLoadingAction = () => {
 export const setErrorAction = () => {
     return (dispatch) => {
         dispatch({
-            type: getMarvelDataConstants.SET_ERROR_ACTION
+            type: getMarvelDataConstants.SET_ERROR
         });
     }
 }
@@ -75,7 +75,10 @@ export const getDetailForCharactersAction = (characterId) => {
                 console.err(error.response);
                 dispatch({
                     type: getMarvelDataConstants.PAGE_NOT_FOUND
-                })
+                });
+                dispatch({
+                    type: getMarvelDataConstants.UNLOADING
+                });
             })
     }
 }
@@ -214,6 +217,9 @@ export const getSingleComicAction = (comicId) => {
                         dispatch({
                             type: getMarvelDataConstants.PAGE_NOT_FOUND
                         });
+                        dispatch({
+                            type: getMarvelDataConstants.UNLOADING
+                        })
                     });
             });
     }
@@ -307,5 +313,27 @@ export const getSearchForEventActions = (query) => {
             })
         })
         
+    }
+}
+
+export const getEventDetailsAction = (eventId) => {
+    return (dispatch) => {
+        axios
+            .get(`${baseUrlEvents}/${eventId}?${marvelKey}`)
+            .then((response) => {
+                dispatch({
+                    type: getMarvelDataConstants.EVENT_DETAILS,
+                    payload: response.data.data.results[0]
+                });
+            })
+            .catch((error) => {
+                console.error(error.response);
+                dispatch({
+                    type: getMarvelDataConstants.PAGE_NOT_FOUND
+                });
+                dispatch({
+                    type: getMarvelDataConstants.UNLOADING
+                });
+            });
     }
 }
