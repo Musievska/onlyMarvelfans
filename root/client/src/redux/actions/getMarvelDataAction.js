@@ -4,8 +4,8 @@ import { marvelKey } from '../../api/marvelApi';
 const baseUrlCharacters = process.env.BASE_URL_CHARACTERS;
 const baseUrlComics = process.env.BASE_URL_COMICS;
 const baseUrlEvents = process.env.BASE_URL_EVENTS;
-const baseUrlSeries = process.env.BASE_URL_SERIES;
-const baseUrlStories = process.env.BASE_URL_STORIES;
+// const baseUrlSeries = process.env.BASE_URL_SERIES;
+// const baseUrlStories = process.env.BASE_URL_STORIES;
 const api = process.env.REACT_APP_API;
 
 export const isLoadingAction = () => {
@@ -77,6 +77,34 @@ export const getDetailForCharactersAction = (characterId) => {
                     type: getMarvelDataConstants.PAGE_NOT_FOUND
                 })
             })
+    }
+}
+
+//add character to user's favorites list
+export const addCharactertoUserFavoritesAction = (userId, data) => {
+    return (dispatch) => {
+
+        const token = localStorage.getItem('token');
+        const jwttoken = 'Bearer' + token;
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: jwttoken
+            }
+        }
+
+        axios
+            .post(`${api}/${userId}/characters/favorite/add`, data, config)
+            .then((response) => {
+                dispatch({
+                    type: getMarvelDataConstants.FAVORITE_CHARACTERS,
+                    payload: response.data.data.favoriteCharacters
+                    
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 }
 
@@ -168,5 +196,116 @@ export const getSearchForComicAction = (query) => {
                         console.error(error);
                     });
             });
+    }
+}
+
+//get single comic by comic ID and name
+export const getSingleComicAction = (comicId) => {
+    return (dispatch) => {
+        axios
+            .get(`${baseUrlComics}${comicId}?${marvelKey}`)
+            .then((response) => {
+                dispatch({
+                    type: getMarvelDataConstants.GET_SINGLE_COMIC,
+                    payload: response.data.data.results[0]
+                })
+                    .catch((error) => {
+                        console.error(error.response);
+                        dispatch({
+                            type: getMarvelDataConstants.PAGE_NOT_FOUND
+                        });
+                    });
+            });
+    }
+}
+
+//add comic to user's favorites list
+export const addComicToUserFavoritesAction = (userId, data) => {
+    return (dispatch) => {
+        
+        const token = localStorage.getItem('token');
+        const jwtToken = 'Bearer' + token;
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: jwtToken
+            }
+        }
+
+        axios
+            .post(`${api}/${userId}/comics/favorite/add`, data, config)
+            .then((response) => {
+                dispatch({
+                    type: getMarvelDataConstants.FAVORITE_COMICS,
+                    payload: response.data.data.favoriteComics
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+}
+
+//remove comic from user's favorites list
+export const removeComicFromFavoritesAction = (userId, comicId) => {
+    return (dispatch) => {
+
+        const token = localStorage.getItem('token');
+        const jwtToken = 'Bearer' + token;
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: jwtToken
+            }
+        }
+        const data = {
+            comicId: comicId
+        }
+
+        axios
+            .post(`${api}/comics/favorite/delete`, data, config)
+            .then((response) => {
+                dispatch({
+                    type: getMarvelDataConstants.FAVORITE_COMICS,
+                    payload: response.data.data.favoriteComics
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+}
+
+//get all events order by realse date
+export const getAllEventsActions = () => {
+    return(dispatch) => {
+        axios
+            .get(`${baseUrlEvents}?orderBy=-startDate${marvelKey}`)
+            .then((response) => {
+                dispatch({
+                type: getMarvelDataConstants.GET_ALL_EVENTS,
+                    payload: response.data.data.results
+                });
+            })
+            .catch((error) => {
+            console.error(error);
+        })
+
+    }
+}
+
+//search for events by name starts with ,,,
+export const getSearchForEventActions = (query) => {
+    return (dispatch) => {
+        axios
+            .get(`${baseUrlEvents}?nameStartsWith=${query}&orderBy=-startDate${marvelKey}`)
+            .then((response) => {
+                dispatch({
+                    type: getMarvelDataConstants.SEARCH_FOR_SINGLE_EVENT,
+                    payload: response.data.data.results
+            })
+        })
+        
     }
 }
