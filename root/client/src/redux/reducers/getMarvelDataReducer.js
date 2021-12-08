@@ -1,6 +1,8 @@
 import { getMarvelDataConstants } from "../constants/getMarvelDataConstants";
 
 const initialState = {
+    pageNotFound: false,
+    isLoading: false,
     characters: [],
     comics: [],
     events: [],
@@ -9,8 +11,6 @@ const initialState = {
     eventInfo: {},
     favoriteCharacters: [],
     favoriteComics: [],
-    pageNotFound: false,
-    isLoading: false,
 }
 
 export default function marvelDataReducer(state = initialState, action) {
